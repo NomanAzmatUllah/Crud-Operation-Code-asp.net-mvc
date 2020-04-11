@@ -1,0 +1,104 @@
+public ActionResult Index()
+        {
+
+
+            return View(db.customers.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+
+            List<movie> li = db.movies.ToList();
+            ViewBag.listmovie = new SelectList(li,"id","name");
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(customerviewmodel c)
+        {
+
+            List<movie> li = db.movies.ToList();
+            ViewBag.listmovie = new SelectList(li,"id","name");
+
+            customer cs = new customer();
+            cs.name = c.name;
+            cs.birthdate = c.birthdate;
+            cs.memeber_name = cs.memeber_name;
+            cs.cusstomer_movie_name = c.cusstomer_movie_name;
+            db.customers.Add(cs);
+            db.SaveChanges();
+            return RedirectToAction("Index","Home");
+
+
+
+            return View();
+        }
+
+        [HttpGet]
+
+        public ActionResult Edit(int ?id)
+        {
+            
+
+            if (id == null)
+            {
+
+                return RedirectToAction("Index");
+            }
+
+            List<movie> li = db.movies.ToList();
+            ViewBag.listmovie = new SelectList(li, "id", "name");
+            customer t =  db.customers.Where(x => x.id == id).SingleOrDefault();
+           
+
+            if (t == null)
+            {
+                return HttpNotFound();
+
+            }
+
+            return View(t);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(customer std)
+        {
+
+            List<movie> li = db.movies.ToList();
+            ViewBag.listmovie = new SelectList(li, "id", "name");
+
+            db.Entry(std).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+
+            return View();
+        }
+        public ActionResult Delete(int ? id)
+        {
+            if (id !=null)
+            {
+
+                customer cs = db.customers.Find(id);
+                db.customers.Remove(cs);
+                db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+               
+
+            }
+
+
+
+
+
+ public ActionResult Details(int ? id)
+        {
+
+            customer st = db.customers.Find(id);
+
+            return View(st);
+
+        }
